@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏠 ML House Price Predictor | Machine Learning App</title>
+  <meta name="description" content="App interactiva de predicción de precios de casas usando Machine Learning - California Housing Dataset"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-title">HouseML <span class="badge">Deepnote App</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#eda" class="nav-link">📊 EDA</a>
+    <a href="#modelos" class="nav-link">🤖 Modelos</a>
+    <a href="#predictor" class="nav-link active">🎮 Predictor</a>
+  </div>
+  <div class="nav-status">
+    <span class="status-dot"></span>
+    <span>Gradient Boosting activo</span>
+  </div>
+</nav>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-chip">🎓 Machine Learning · Clase Demo</div>
+    <h1 class="hero-title">
+      Predicción de Precios<br/>
+      <span class="gradient-text">con Machine Learning</span>
+    </h1>
+    <p class="hero-sub">
+      Análisis completo del <strong>California Housing Dataset</strong> con modelos de ML,
+      visualizaciones interactivas y un predictor en tiempo real.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-val">20,640</div>
+        <div class="stat-lbl">casas analizadas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">8</div>
+        <div class="stat-lbl">variables</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">3</div>
+        <div class="stat-lbl">modelos ML</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">R²=0.86</div>
+        <div class="stat-lbl">mejor modelo</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="floating-card card-1">
+      <span>💰</span> Precio Predicho<br/>
+      <strong>$247.3K</strong>
+    </div>
+    <div class="floating-card card-2">
+      <span>🎯</span> Precisión<br/>
+      <strong>86.4%</strong>
+    </div>
+    <div class="floating-card card-3">
+      <span>🚀</span> Gradient Boosting<br/>
+      <strong>Mejor Modelo</strong>
+    </div>
+    <div class="house-3d">🏡</div>
+  </div>
+</section>
+<!-- ═══ EDA SECTION ═══ -->
+<section class="section" id="eda">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div>
+      <h2>Análisis Exploratorio de Datos</h2>
+      <p>Distribuciones, correlaciones y patrones geográficos del dataset</p>
+    </div>
+  </div>
+  <!-- Stats Row -->
+  <div class="stats-grid">
+    <div class="info-card" id="stat-mean">
+      <div class="info-icon">💵</div>
+      <div class="info-val">$206.9K</div>
+      <div class="info-lbl">Precio Promedio</div>
+    </div>
+    <div class="info-card" id="stat-min">
+      <div class="info-icon">📉</div>
+      <div class="info-val">$14.9K</div>
+      <div class="info-lbl">Precio Mínimo</div>
+    </div>
+    <div class="info-card" id="stat-max">
+      <div class="info-icon">📈</div>
+      <div class="info-val">$500.0K</div>
+      <div class="info-lbl">Precio Máximo</div>
+    </div>
+    <div class="info-card" id="stat-std">
+      <div class="info-icon">📊</div>
+      <div class="info-val">$115.4K</div>
+      <div class="info-lbl">Desviación Estándar</div>
+    </div>
+  </div>
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-box">
+      <h3>📦 Distribución de Precios</h3>
+      <canvas id="histChart" height="260"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>🔥 Correlación con el Precio</h3>
+      <canvas id="corrChart" height="260"></canvas>
+    </div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box">
+      <h3>📈 Ingreso Mediano vs Precio</h3>
+      <canvas id="scatterChart" height="260"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>🌡️ Distribución por Quintiles de Precio</h3>
+      <canvas id="boxChart" height="260"></canvas>
+    </div>
+  </div>
+</section>
+<!-- ═══ MODELOS SECTION ═══ -->
+<section class="section" id="modelos">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div>
+      <h2>Comparativa de Modelos ML</h2>
+      <p>Regresión Lineal vs Random Forest vs Gradient Boosting</p>
+    </div>
+  </div>
+  <!-- Model Cards -->
+  <div class="model-cards">
+    <div class="model-card">
+      <div class="model-icon">📏</div>
+      <div class="model-name">Regresión Lineal</div>
+      <div class="model-metrics">
+        <div class="metric"><span class="metric-lbl">R²</span><span class="metric-val poor">0.606</span></div>
+        <div class="metric"><span class="metric-lbl">RMSE</span><span class="metric-val poor">$72.8K</span></div>
+        <div class="metric"><span class="metric-lbl">MAE</span><span class="metric-val poor">$53.4K</span></div>
+      </div>
+      <div class="model-bar">
+        <div class="model-bar-fill" style="width:60.6%; background: #FF6B6B;"></div>
+      </div>
+      <div class="model-tag">Baseline</div>
+    </div>
+    <div class="model-card">
+      <div class="model-icon">🌲</div>
+      <div class="model-name">Random Forest</div>
+      <div class="model-metrics">
+        <div class="metric"><span class="metric-lbl">R²</span><span class="metric-val good">0.805</span></div>
+        <div class="metric"><span class="metric-lbl">RMSE</span><span class="metric-val good">$51.2K</span></div>
+        <div class="metric"><span class="metric-lbl">MAE</span><span class="metric-val good">$33.1K</span></div>
+      </div>
+      <div class="model-bar">
+        <div class="model-bar-fill" style="width:80.5%; background: #4ECDC4;"></div>
+      </div>
+      <div class="model-tag">Bueno</div>
+    </div>
+    <div class="model-card best">
+      <div class="best-badge">🏆 MEJOR</div>
+      <div class="model-icon">🚀</div>
+      <div class="model-name">Gradient Boosting</div>
+      <div class="model-metrics">
+        <div class="metric"><span class="metric-lbl">R²</span><span class="metric-val best-val">0.864</span></div>
+        <div class="metric"><span class="metric-lbl">RMSE</span><span class="metric-val best-val">$43.9K</span></div>
+        <div class="metric"><span class="metric-lbl">MAE</span><span class="metric-val best-val">$28.7K</span></div>
+      </div>
+      <div class="model-bar">
+        <div class="model-bar-fill" style="width:86.4%; background: linear-gradient(90deg,#6C63FF,#FF6B6B);"></div>
+      </div>
+      <div class="model-tag best-tag">Óptimo</div>
+    </div>
+  </div>
+  <!-- Comparison Chart -->
+  <div class="charts-row">
+    <div class="chart-box" style="flex:1.5">
+      <h3>📊 Comparativa de Métricas</h3>
+      <canvas id="metricsChart" height="220"></canvas>
+    </div>
+    <div class="chart-box" style="flex:1">
+      <h3>🧠 Importancia de Variables (SHAP)</h3>
+      <canvas id="shapChart" height="220"></canvas>
+    </div>
+  </div>
+  <!-- Predicted vs Real -->
+  <div class="chart-box full-width">
+    <h3>🎯 Gradient Boosting — Predicho vs Real (500 muestras)</h3>
+    <canvas id="predRealChart" height="280"></canvas>
+  </div>
+</section>
+<!-- ═══ PREDICTOR SECTION ═══ -->
+<section class="section" id="predictor">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div>
+      <h2>Predictor Interactivo 🎮</h2>
+      <p>Ajusta las características de la casa y obtén el precio estimado en tiempo real</p>
+    </div>
+  </div>
+  <div class="predictor-layout">
+    <!-- Sliders -->
+    <div class="sliders-panel">
+      <h3 class="panel-title">⚙️ Características de la Casa</h3>
+      <div class="slider-group">
+        <label>💵 Ingreso Mediano del Área
+          <span class="slider-val" id="val-ingreso">$40,000/año</span>
+        </label>
+        <input type="range" id="sl-ingreso" min="0.5" max="15" step="0.1" value="4.0" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>🏚️ Edad de la Casa
+          <span class="slider-val" id="val-edad">20 años</span>
+        </label>
+        <input type="range" id="sl-edad" min="1" max="52" step="1" value="20" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>🛋️ Habitaciones Promedio
+          <span class="slider-val" id="val-habitac">5.0</span>
+        </label>
+        <input type="range" id="sl-habitac" min="1" max="15" step="0.5" value="5.0" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>🛏️ Dormitorios Promedio
+          <span class="slider-val" id="val-dormi">1.0</span>
+        </label>
+        <input type="range" id="sl-dormi" min="0.5" max="5" step="0.1" value="1.0" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>👥 Población del Área
+          <span class="slider-val" id="val-pobla">1,500</span>
+        </label>
+        <input type="range" id="sl-pobla" min="100" max="10000" step="100" value="1500" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>👨‍👩‍👧 Ocupantes Promedio
+          <span class="slider-val" id="val-ocup">3.0</span>
+        </label>
+        <input type="range" id="sl-ocup" min="1" max="10" step="0.1" value="3.0" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>🌐 Latitud (Norte ↑ / Sur ↓)
+          <span class="slider-val" id="val-lat">34.0°</span>
+        </label>
+        <input type="range" id="sl-lat" min="32.5" max="42.0" step="0.1" value="34.0" class="slider"/>
+      </div>
+      <div class="slider-group">
+        <label>🌐 Longitud (Costa ← / Interior →)
+          <span class="slider-val" id="val-lon">-118.0°</span>
+        </label>
+        <input type="range" id="sl-lon" min="-124.5" max="-114.0" step="0.1" value="-118.0" class="slider"/>
+      </div>
+      <button class="reset-btn" id="btn-reset">↺ Restablecer valores</button>
+    </div>
+    <!-- Result Panel -->
+    <div class="result-panel">
+      <div class="result-card" id="result-card">
+        <div class="result-label">💰 Precio Estimado</div>
+        <div class="result-price" id="result-price">$—</div>
+        <div class="result-category" id="result-category">—</div>
+        <div class="result-confidence">
+          <div class="conf-bar-label">
+            <span>Confianza del modelo</span>
+            <span id="conf-pct">—</span>
+          </div>
+          <div class="conf-bar-track">
+            <div class="conf-bar-fill" id="conf-bar"></div>
+          </div>
+        </div>
+        <div class="result-detail" id="result-detail"></div>
+        <!-- Gauge Chart -->
+        <canvas id="gaugeChart" height="180" style="margin-top:20px;"></canvas>
+        <!-- SHAP mini explanation -->
+        <div class="shap-mini" id="shap-mini">
+          <div class="shap-title">🔍 Factores que más influyeron:</div>
+          <div id="shap-factors"></div>
+        </div>
+      </div>
+      <!-- Mini scatter: market position -->
+      <div class="chart-box" style="margin-top:20px;">
+        <h3>📍 Posición en el Mercado</h3>
+        <canvas id="marketChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-content">
+    <div>
+      <strong>🏠 HouseML — Machine Learning App</strong><br/>
+      <small>Dataset: California Housing (scikit-learn) · Modelos: sklearn · Visualizaciones: Chart.js</small>
+    </div>
+    <div class="footer-chips">
+      <span class="chip">Python</span>
+      <span class="chip">scikit-learn</span>
+      <span class="chip">Plotly</span>
+      <span class="chip">SHAP</span>
+      <span class="chip">Deepnote</span>
+    </div>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
